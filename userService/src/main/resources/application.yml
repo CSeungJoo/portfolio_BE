@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: user
+  profiles:
+    active: dev
+  config:
+    import: optional:configserver:http://${username}:${password}@localhost:8888
+
+
+security:
+  username: ${username}
+  password: ${password}
+
+jwt:
+  expiration_time: 86400000 #1일
+  secret: VlwEyVBsYt9V7zq57TejMnVUyzblYcfPQye08f7MGVA9XkHa

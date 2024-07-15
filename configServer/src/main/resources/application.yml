@@ -1,0 +1,15 @@
+server:
+  port: ${configServerPort}
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: ${gitUri}
+          default-label: master
+          ignore-local-ssh-settings: true
+          private-key: ${privateKey}
+          search-paths: config/**
+security:
+  username: ${username}
+  password: ${password}

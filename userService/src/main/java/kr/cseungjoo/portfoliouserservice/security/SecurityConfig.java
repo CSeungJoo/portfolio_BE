@@ -1,7 +1,7 @@
 package kr.cseungjoo.portfoliouserservice.security;
 
-import kr.cseungjoo.portfoliouserservice.security.jwt.JwtFilter;
-import kr.cseungjoo.portfoliouserservice.security.jwt.JwtProvider;
+//import kr.cseungjoo.commonmodule.jwt.JwtFilter;
+//import kr.cseungjoo.commonmodule.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtProvider jwtProvider;
+//    private final JwtProvider jwtProvider;
     @Bean
     public PasswordEncoder pwdEncoder() {
         return new BCryptPasswordEncoder();
@@ -34,8 +34,8 @@ public class SecurityConfig {
                         req
                                 .requestMatchers("/auth/**").permitAll()
                                 .anyRequest().authenticated()
-                )
-                .addFilterBefore(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+                );
+//                .addFilterBefore(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

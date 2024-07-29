@@ -1,6 +1,7 @@
 package kr.cseungjoo.jobcategory.service;
 
 import kr.cseungjoo.jobcategory.domain.JobCategory;
+import kr.cseungjoo.jobcategory.exception.JobCategoryNotFoundException;
 import kr.cseungjoo.jobcategory.repository.JobCategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,5 +16,11 @@ public class JobCategoryService {
 
     public List<JobCategory> getJobCategoryByIds(Iterable<Integer> ids) {
         return jobCategoryRepository.findAllById(ids);
+    }
+
+    public JobCategory getJobCategoryById(int id) {
+        return jobCategoryRepository.findById(id).orElseThrow(
+                JobCategoryNotFoundException::new
+        );
     }
 }

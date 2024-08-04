@@ -1,4 +1,4 @@
-package kr.cseungjoo.portfoliouserservice.security.jwt;
+package kr.cseungjoo.commonmodule.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -31,9 +31,9 @@ public class JwtProvider implements InitializingBean {
 
     public JwtProvider(
             @Value("${jwt.secret}") String secret,
-            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
+            @Value("${jwt.expiration_time}") long tokenValidityInSeconds) {
         this.secret = secret;
-        this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
+        this.tokenValidityInMilliseconds = tokenValidityInSeconds;
     }
     @Override
     public void afterPropertiesSet() {

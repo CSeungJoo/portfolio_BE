@@ -1,4 +1,4 @@
-package kr.cseungjoo.portfoliouserservice.security.jwt;
+package kr.cseungjoo.commonmodule.jwt;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

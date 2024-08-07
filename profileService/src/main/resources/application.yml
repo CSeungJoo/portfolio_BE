@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: profile
+  profiles:
+    active: dev
+  config:
+    import: optional:configserver:http://1234:1234@localhost:8888
+
+security:
+  username: 1234
+  password: 1234

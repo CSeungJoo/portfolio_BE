@@ -30,4 +30,7 @@ public class Etc {
 
     @Column
     private String introduce;
+
+    @Column
+    private Long usersId;
 }

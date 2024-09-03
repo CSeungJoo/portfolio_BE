@@ -4,23 +4,27 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import kr.cseungjoo.commonmodule.security.auth.PrincipalDetails;
-import kr.cseungjoo.commonmodule.security.auth.UserDetailsService;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class JwtProvider implements InitializingBean {
 
     private final Logger logger = LoggerFactory.getLogger(JwtProvider.class);
@@ -29,22 +33,13 @@ public class JwtProvider implements InitializingBean {
     private static final String ACCESS_TOKEN_TYPE = "access";
     private static final String REFRESH_TOKEN_TYPE = "refresh";
 
-    private final String secret;
-    private final long tokenValidityInMilliseconds;
-    private final long refreshTokenValidityInMilliseconds;
+    @Value("${jwt.secret}")
+    private String secret;
+    @Value("${jwt.expiration_time}")
+    private long tokenValidityInMilliseconds;
+    @Value("${jwt.refresh_expiration_time}")
+    private long refreshTokenValidityInMilliseconds;
     private Key key;
-    private final UserDetailsService userDetailsService;
-
-    public JwtProvider(
-            @Value("${jwt.secret}") String secret,
-            @Value("${jwt.expiration_time}") long tokenValidityInSeconds,
-            @Value("${jwt.refresh_expiration_time}") long refreshTokenValidityInSeconds,
-            UserDetailsService userDetailsService) {
-        this.secret = secret;
-        this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
-        this.refreshTokenValidityInMilliseconds = refreshTokenValidityInSeconds * 1000;
-        this.userDetailsService = userDetailsService;
-    }
 
     @Override
     public void afterPropertiesSet() {
@@ -52,30 +47,32 @@ public class JwtProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createAccessToken(Authentication authentication) {
-        return createToken(authentication, ACCESS_TOKEN_TYPE, tokenValidityInMilliseconds);
+//    public String createAccessToken(Authentication authentication) {
+//        return createToken(authentication.getAuthorities().toString(), ACCESS_TOKEN_TYPE);
+//    }
+
+    public String createAccessToken(String role) {
+        return createToken(role, ACCESS_TOKEN_TYPE);
+    }
+//    public String createRefreshToken(Authentication authentication) {
+//        return createToken(authentication.getAuthorities().toString(), REFRESH_TOKEN_TYPE);
+//    }
+    public String createRefreshToken(String role) {
+        return createToken(role, REFRESH_TOKEN_TYPE);
     }
 
-    public String createRefreshToken(Authentication authentication) {
-        return createToken(authentication, REFRESH_TOKEN_TYPE, refreshTokenValidityInMilliseconds);
-    }
-
-    private String createToken(Authentication authentication, String tokenType, long validityInMilliseconds) {
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-
+    public String createToken(String role, String tokenType) {
         long now = (new Date()).getTime();
-        Date validity = new Date(now + validityInMilliseconds);
+        Date validity = new Date(now + this.tokenValidityInMilliseconds);
 
         return Jwts.builder()
-                .setSubject(authentication.getName())
-                .claim(AUTHORITIES_KEY, authorities)
+                .claim("role", role)
                 .claim(TOKEN_TYPE_KEY, tokenType)
-                .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
     }
+
 
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parserBuilder()
@@ -84,11 +81,12 @@ public class JwtProvider implements InitializingBean {
                 .parseClaimsJws(token)
                 .getBody();
 
-        String username = claims.getSubject();
-        PrincipalDetails principalDetails = userDetailsService.loadUserByUsername(username);
+        String role = claims.get("role", String.class);
+        PrincipalDetails principalDetails = new PrincipalDetails(token, Collections.singletonList(role));
 
         return new UsernamePasswordAuthenticationToken(principalDetails, "", principalDetails.getAuthorities());
     }
+
 
     public boolean validateToken(String token) {
         try {
@@ -131,10 +129,7 @@ public class JwtProvider implements InitializingBean {
                     .parseClaimsJws(refreshToken)
                     .getBody();
 
-            User principal = new User(claims.getSubject(), "", new ArrayList<>());
-
-            Authentication authentication = new UsernamePasswordAuthenticationToken(principal, refreshToken, new ArrayList<>());
-            return createAccessToken(authentication);
+            return createAccessToken(claims.get("role", String.class));
         } else {
             throw new RuntimeException("Invalid refresh token");
         }

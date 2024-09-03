@@ -9,13 +9,12 @@ import java.util.stream.Collectors;
 
 public class PrincipalDetails implements UserDetails {
 
-    private final String username;
-    private final String password;
+    private final String token;
+//    private final String password;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public PrincipalDetails(String username, String password, Collection<String> roles) {
-        this.username = username;
-        this.password = password;
+    public PrincipalDetails(String token, Collection<String> roles) {
+        this.token = token;
         this.authorities = roles.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());;
@@ -23,7 +22,7 @@ public class PrincipalDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return token;
     }
 
     @Override
@@ -53,6 +52,6 @@ public class PrincipalDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return null;
     }
 }

@@ -65,6 +65,8 @@ public class JwtProvider implements InitializingBean {
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenValidityInMilliseconds);
 
+        if (tokenType.equals(REFRESH_TOKEN_TYPE))
+            validity.setTime(validity.getTime() + this.refreshTokenValidityInMilliseconds);
         return Jwts.builder()
                 .claim("role", role)
                 .claim(TOKEN_TYPE_KEY, tokenType)

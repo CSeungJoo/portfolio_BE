@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: gateway
+  config:
+    import: configserver:http://${username}:${password}@${configServerIp}:8888
+

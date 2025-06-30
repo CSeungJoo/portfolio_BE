@@ -1,10 +1,10 @@
-package kr.cseungjoo.configserver;
+package kr.cseungjoo.userserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ConfigServerApplicationTests {
+class UserServerApplicationTests {
 
 	@Test
 	void contextLoads() {

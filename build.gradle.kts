@@ -12,6 +12,25 @@ repositories {
     mavenCentral()
 }
 
+
+// 전역 변수로 저장
+val envProperties = mutableMapOf<String, String>()
+
+fun loadEnvFromDotEnv() {
+    val envFile = rootProject.file(".env")
+    if (!envFile.exists()) return
+
+    envFile.readLines()
+        .filter { it.isNotBlank() && !it.trim().startsWith("#") }
+        .forEach { line ->
+            val (key, value) = line.split("=", limit = 2)
+            envProperties[key.trim()] = value.trim()
+        }
+}
+
+
+loadEnvFromDotEnv()
+
 subprojects {
 
     group = "kr.cseungjoo"
@@ -33,19 +52,20 @@ subprojects {
     }
 
     dependencies {
-        implementation("org.springframework.boot:spring-boot-starter-security")
-        implementation("org.springframework.boot:spring-boot-starter-web")
         compileOnly("org.projectlombok:lombok")
         annotationProcessor("org.projectlombok:lombok")
-        testImplementation("org.springframework.boot:spring-boot-starter-test")
-        testImplementation("org.springframework.security:spring-security-test")
         testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     }
 
-//    tasks.withType<JavaCompile> {
-//        sourceCompatibility = "17"
-//        targetCompatibility = "17"
-//    }
+
+    tasks.withType<JavaExec> {
+        systemProperties.putAll(envProperties)
+    }
+
+    tasks.test {
+        useJUnitPlatform()
+        environment(envProperties)
+    }
 
     tasks.test {
         useJUnitPlatform()

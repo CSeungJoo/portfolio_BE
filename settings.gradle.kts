@@ -1,5 +1,8 @@
 rootProject.name = "portfolio_BE"
 
-include("eurekaServer")
-include("configServer")
-include("gatewayServer")
+include(":commonModule")
+include(":eurekaServer")
+include(":configServer")
+include(":gatewayServer")
+include(":userServer")
+include(":authServer")

@@ -11,5 +11,5 @@ eureka:
     eviction-interval-timer-in-ms: 10000
 
 security:
-  username: ${username}
-  password: ${password}
+  username: ${CONFIG_USERNAME}
+  password: ${CONFIG_PASSWORD}

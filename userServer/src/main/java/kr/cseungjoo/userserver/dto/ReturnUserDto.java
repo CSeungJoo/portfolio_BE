@@ -13,6 +13,7 @@ import java.time.LocalDate;
 public class ReturnUserDto {
     private String email;
     private String name;
+    private String nickname;
     private LocalDate birth;
     private int careerYears;
     private String phoneNumber;
@@ -21,6 +22,7 @@ public class ReturnUserDto {
     public ReturnUserDto(User user) {
         this.email = user.getEmail();
         this.name = user.getName();
+        this.nickname = user.getNickname();
         this.birth = user.getBirth();
         this.careerYears = user.getCareerYears();
         this.phoneNumber = user.getPhoneNumber();

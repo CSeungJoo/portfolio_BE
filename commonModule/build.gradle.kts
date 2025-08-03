@@ -18,6 +18,7 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 	testImplementation("org.springframework.security:spring-security-test")
 }
 

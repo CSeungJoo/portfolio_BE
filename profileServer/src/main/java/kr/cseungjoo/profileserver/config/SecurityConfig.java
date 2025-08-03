@@ -1,4 +1,4 @@
-package kr.cseungjoo.userserver.config;
+package kr.cseungjoo.profileserver.config;
 
 import kr.cseungjoo.commonmodule.Role;
 import kr.cseungjoo.commonmodule.security.jwt.filter.JwtAuthFilter;
@@ -31,16 +31,12 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/register").permitAll()
                         .requestMatchers("/admin/**").hasAuthority(Role.ADMIN.name())
                         .requestMatchers("/user/system/**").hasAuthority(Role.SYSTEM.name())
+                        .requestMatchers("/profile/info/*").permitAll()
                         .anyRequest().hasAnyAuthority(Role.ADMIN.name(), Role.USER.name(), Role.GUEST.name())
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exce -> exce
-                        .authenticationEntryPoint(new CustomAuthenticationEntryPointHandler())
-                        .accessDeniedHandler(new CustomAccessDeniedHandler())
-                )
                 .build();
     }
 }

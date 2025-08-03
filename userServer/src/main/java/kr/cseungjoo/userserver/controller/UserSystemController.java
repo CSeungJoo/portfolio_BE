@@ -6,10 +6,7 @@ import kr.cseungjoo.userserver.dto.LoginDto;
 import kr.cseungjoo.userserver.facade.UserFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user/system")
@@ -23,5 +20,19 @@ public class UserSystemController {
         User user = userFacade.login(loginDto);
 
         return BasicResponse.ok(user);
+    }
+
+    @GetMapping("/id/by-email")
+    public ResponseEntity<BasicResponse.BaseResponse> getUserIdByEmail(@RequestParam String email) {
+        long userId = userFacade.getIdByEmail(email);
+
+        return BasicResponse.ok(userId);
+    }
+
+    @GetMapping("/id/by-nickname")
+    public ResponseEntity<BasicResponse.BaseResponse> getUserIdByNickname(@RequestParam String nickname) {
+        long userId = userFacade.getIdByNickname(nickname);
+
+        return BasicResponse.ok(userId);
     }
 }

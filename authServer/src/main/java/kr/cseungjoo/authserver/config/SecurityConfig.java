@@ -36,10 +36,6 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//                .exceptionHandling(exce -> exce
-//                        .authenticationEntryPoint(new CustomAuthenticationEntryPointHandler())
-//                        .accessDeniedHandler(new CustomAccessDeniedHandler())
-//                )
                 .build();
     }
 }

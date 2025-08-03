@@ -27,11 +27,12 @@ public class UserService {
     }
 
     @Transactional
-    public User create(String email, String password, String name, LocalDate birth, int careerYears, String phoneNumber, int age) {
+    public User create(String email, String password, String name, String nickname, LocalDate birth, int careerYears, String phoneNumber, int age) {
         User build = User.builder()
                 .email(email)
                 .password(pwdEncoder.encode(password))
                 .name(name)
+                .nickname(nickname)
                 .birth(birth)
                 .careerYears(careerYears)
                 .phoneNumber(phoneNumber)
@@ -67,5 +68,21 @@ public class UserService {
         }
 
         return user;
+    }
+
+    public long getId(String email) {
+        Long userId = userRepository.findIdByEmail(email).orElseThrow(
+                UserNotFoundException::new
+        );
+
+        return userId;
+    }
+
+    public long getIdByNickname(String nickname) {
+        Long userId = userRepository.findIdByNickname(nickname).orElseThrow(
+                UserNotFoundException::new
+        );
+
+        return userId;
     }
 }

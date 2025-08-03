@@ -30,6 +30,9 @@ public class User {
     private String name;
 
     @Column
+    private String nickname;
+
+    @Column
     private LocalDate birth;
 
     @Column

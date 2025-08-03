@@ -24,6 +24,9 @@ public class RegisterDto {
     @NotBlank
     private String name;
 
+    @NotBlank
+    private String nickname;
+
     @NotNull
     private LocalDate birth;
 

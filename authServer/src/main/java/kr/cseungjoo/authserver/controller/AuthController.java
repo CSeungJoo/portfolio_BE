@@ -1,6 +1,7 @@
 package kr.cseungjoo.authserver.controller;
 
 import kr.cseungjoo.authserver.dto.LoginDto;
+import kr.cseungjoo.authserver.dto.TokenDto;
 import kr.cseungjoo.authserver.service.AuthService;
 import kr.cseungjoo.commonmodule.basic.response.BasicResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<BasicResponse.BaseResponse> login(@Validated @RequestBody LoginDto loginDto) {
-        ResponseEntity<BasicResponse.BaseResponse> login = authService.login(loginDto);
+        TokenDto tokenDto = authService.login(loginDto);
 
-        return login;
+        return BasicResponse.ok(tokenDto);
     }
 }

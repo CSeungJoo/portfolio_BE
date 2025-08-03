@@ -1,5 +1,6 @@
 package kr.cseungjoo.authserver.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.cseungjoo.authserver.domain.RefreshToken;
 import kr.cseungjoo.authserver.dto.LoginDto;
 import kr.cseungjoo.authserver.dto.TokenDto;
@@ -20,21 +21,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthService {
 
+    private final JwtProvider jwtProvider;
+    private final ObjectMapper objectMapper;
     private final AuthFeignClient authFeignClient;
     private final RefreshTokenService refreshTokenService;
-    private final JwtProvider jwtProvider;
 
-    public ResponseEntity<BasicResponse.BaseResponse> login (LoginDto loginDto) {
+    public TokenDto login (LoginDto loginDto) {
 
         String systemToken = "Bearer "+ jwtProvider.generateAccessToken("system@system.system", Collections.singletonMap("role", Role.SYSTEM));
 
         ResponseEntity<BasicResponse.BaseResponse> userEntity = authFeignClient.login(systemToken, loginDto);
 
-        if(userEntity.getBody().status() == BasicResponse.BaseStatus.ERROR) {
-            return userEntity;
-        }
-
-        UserDto user = (UserDto) userEntity.getBody().data();
+        UserDto user = objectMapper.convertValue(userEntity.getBody().data(), UserDto.class);
 
         String accessToken = jwtProvider.generateAccessToken(user.getEmail(), Collections.singletonMap("role", user.getRole()));
         String refreshToken = jwtProvider.generateRefreshToken(user.getId(), user.getEmail());
@@ -53,6 +51,6 @@ public class AuthService {
                 .refreshToken(rt.getRefreshToken())
                 .build();
 
-        return BasicResponse.ok(tokenDto);
+        return tokenDto;
     }
 }

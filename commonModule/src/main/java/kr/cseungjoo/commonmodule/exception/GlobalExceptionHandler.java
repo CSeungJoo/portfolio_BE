@@ -1,6 +1,7 @@
 package kr.cseungjoo.commonmodule.exception;
 
 
+import feign.FeignException;
 import kr.cseungjoo.commonmodule.basic.response.BasicResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,11 @@ public class GlobalExceptionHandler {
         );
 
         return createCustomErrorResponse(errors, HttpStatus.BAD_REQUEST, BasicResponse.BaseStatus.ERROR, e);
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<BasicResponse.BaseResponse> feignException(FeignException e) {
+        return BasicResponse.error(ErrorCode.OPEN_FEIGN_EXCEPTION);
     }
 
     @ExceptionHandler(RuntimeException.class)

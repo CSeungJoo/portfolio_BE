@@ -25,6 +25,7 @@ public class UserFacade {
                 registerDto.getEmail(),
                 registerDto.getPassword(),
                 registerDto.getName(),
+                registerDto.getNickname(),
                 registerDto.getBirth(),
                 registerDto.getCareerYears(),
                 registerDto.getPhoneNumber(),
@@ -44,5 +45,17 @@ public class UserFacade {
         User user = userService.get(loginDto.getEmail(), loginDto.getPassword());
 
         return user;
+    }
+
+    public long getIdByEmail(String email) {
+        long userId = userService.getId(email);
+
+        return userId;
+    }
+
+    public long getIdByNickname(String nickname) {
+        long userId =  userService.getIdByNickname(nickname);
+
+        return userId;
     }
 }

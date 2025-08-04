@@ -19,7 +19,10 @@ public enum ErrorCode {
     //profile
     PROFILE_NOT_FOUND("프로필을 찾을 수 없습니다.", HttpStatus.NOT_FOUND, "24040"),
     PROFILE_ACCESS_DENIED("프로필을 조회할 권한이 없습니다.", HttpStatus.FORBIDDEN, "24030"),
-    PROFILE_EXISTS("프로필이 이미 존재합니다.", HttpStatus.CONFLICT, "24090");
+    PROFILE_EXISTS("프로필이 이미 존재합니다.", HttpStatus.CONFLICT, "24090"),
+    //skill
+    SKILL_NOT_FOUND("스킬을 찾을 수 없습니다.", HttpStatus.NOT_FOUND, "34040"),
+    SKILL_NOT_OWNER("해당 스킬의 주인이 아닙니다", HttpStatus.FORBIDDEN, "34030");
     private final String msg;
     private final HttpStatus status;
     private final String code;

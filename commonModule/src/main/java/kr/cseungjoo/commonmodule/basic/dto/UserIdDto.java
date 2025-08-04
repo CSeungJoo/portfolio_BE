@@ -1,4 +1,4 @@
-package kr.cseungjoo.profileserver.dto;
+package kr.cseungjoo.commonmodule.basic.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

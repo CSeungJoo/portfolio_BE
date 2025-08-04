@@ -21,13 +21,11 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
-//    public static final String REFRESH_TOKEN_HEADER = "Refresh-Token";
     private final JwtProvider jwtProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String jwt = resolveToken(request, AUTHORIZATION_HEADER);
-//        String refreshToken = resolveToken(request, REFRESH_TOKEN_HEADER);
         String requestURI = request.getRequestURI();
 
         if (StringUtils.hasText(jwt) && jwtProvider.validateToken(jwt)) {
@@ -36,22 +34,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             log.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getAuthorities().stream().findFirst().get().getAuthority(), requestURI);
         }
-//        else if (StringUtils.hasText(refreshToken) && jwtProvider.validateToken(refreshToken) && jwtProvider.isRefreshToken(refreshToken)) {
-//            // 액세스 토큰이 만료되었고, 유효한 리프레시 토큰이 있는 경우
-//            Optional<RefreshToken> rt = refreshTokenService.findRefreshTokenByAccessToken(jwt);
-//            if (rt.isPresent() && rt.get().getRefreshToken().equals(refreshToken)) {
-//                User user = userService.findUser(rt.get().getId()).get();
-//                String newAccessToken = jwtProvider.generateAccessToken(user.getEmail(), Collections.singletonMap("role", user.getRole().name()));
-//                refreshTokenService.updateAccessToken(jwt, newAccessToken);
-//                response.setHeader(AUTHORIZATION_HEADER, "Bearer " + newAccessToken);
-//
-//                Authentication authentication = jwtProvider.getAuthentication(newAccessToken);
-//                SecurityContextHolder.getContext().setAuthentication(authentication);
-//                log.debug("리프레시 토큰을 이용해 새 액세스 토큰을 생성하고 Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
-//            }
-//        } else {
-//            log.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);
-//        }
 
         filterChain.doFilter(request, response);
     }

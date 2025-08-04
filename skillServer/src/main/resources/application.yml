@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: skill
+  config:
+    import: configserver:http://${CONFIG_USERNAME}:${CONFIG_PASSWORD}@localhost:8888
+jwt:
+  secret: ${JWT_SECRET}

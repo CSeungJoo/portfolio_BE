@@ -2,12 +2,12 @@ package kr.cseungjoo.profileserver.facade;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.cseungjoo.commonmodule.Role;
+import kr.cseungjoo.commonmodule.basic.dto.UserIdDto;
 import kr.cseungjoo.commonmodule.basic.response.BasicResponse;
 import kr.cseungjoo.commonmodule.security.jwt.provider.JwtProvider;
 import kr.cseungjoo.profileserver.domain.Profile;
 import kr.cseungjoo.profileserver.dto.CreateProfileDto;
 import kr.cseungjoo.profileserver.dto.EditProfileDto;
-import kr.cseungjoo.profileserver.dto.UserIdDto;
 import kr.cseungjoo.profileserver.exception.ProfileExistsException;
 import kr.cseungjoo.profileserver.exception.ProfileNotFoundException;
 import kr.cseungjoo.profileserver.feign.UserFeignClient;

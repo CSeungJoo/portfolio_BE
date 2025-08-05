@@ -32,7 +32,7 @@ public class SkillController {
         return BasicResponse.ok(returnSkillDto);
     }
 
-    @GetMapping("/{nickname}")
+    @GetMapping("/{nickname}/info")
     public ResponseEntity<BasicResponse.BaseResponse> findAll(@PathVariable("nickname") String nickname) {
         List<SkillModel> skillModelList = skillFacade.findAll(nickname);
 

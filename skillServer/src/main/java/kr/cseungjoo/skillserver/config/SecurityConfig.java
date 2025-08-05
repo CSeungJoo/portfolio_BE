@@ -1,9 +1,7 @@
-package kr.cseungjoo.profileserver.config;
+package kr.cseungjoo.skillserver.config;
 
 import kr.cseungjoo.commonmodule.Role;
 import kr.cseungjoo.commonmodule.security.jwt.filter.JwtAuthFilter;
-import kr.cseungjoo.commonmodule.security.jwt.handler.CustomAccessDeniedHandler;
-import kr.cseungjoo.commonmodule.security.jwt.handler.CustomAuthenticationEntryPointHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,8 +30,8 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/admin/**").hasAuthority(Role.ADMIN.name())
-                        .requestMatchers("/profile/system/**").hasAuthority(Role.SYSTEM.name())
-                        .requestMatchers("/profile/info/*").permitAll()
+                        .requestMatchers("/skill/system/**").hasAuthority(Role.SYSTEM.name())
+                        .requestMatchers("/skill/*/info").permitAll()
                         .anyRequest().hasAnyAuthority(Role.ADMIN.name(), Role.USER.name(), Role.GUEST.name())
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

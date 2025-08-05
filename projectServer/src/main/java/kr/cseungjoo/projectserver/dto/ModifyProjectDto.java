@@ -1,0 +1,23 @@
+package kr.cseungjoo.projectserver.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ModifyProjectDto {
+    private long projectId;
+    private String title;
+    private String summary;
+    private String description;
+    private List<String> techStack;
+    private LocalDate startAt;
+    private LocalDate endAt;
+}

@@ -22,7 +22,10 @@ public enum ErrorCode {
     PROFILE_EXISTS("프로필이 이미 존재합니다.", HttpStatus.CONFLICT, "24090"),
     //skill
     SKILL_NOT_FOUND("스킬을 찾을 수 없습니다.", HttpStatus.NOT_FOUND, "34040"),
-    SKILL_NOT_OWNER("해당 스킬의 주인이 아닙니다", HttpStatus.FORBIDDEN, "34030");
+    SKILL_NOT_OWNER("해당 스킬의 주인이 아닙니다", HttpStatus.FORBIDDEN, "34030"),
+    //project
+    PROJECT_NOT_FOUND("프로젝트를 찾을 수 없습니다.", HttpStatus.NOT_FOUND, "44040"),
+    PROJECT_NOT_FOUND_OR_ACCESS_DENIED("프로젝트가 없거나 사용자의 소유가 아닙니다.",HttpStatus.NOT_FOUND , "44041");
     private final String msg;
     private final HttpStatus status;
     private final String code;

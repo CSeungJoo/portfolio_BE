@@ -27,7 +27,7 @@ public class ProjectModel {
         this.title = project.getTitle();
         this.summary = project.getSummary();
         this.description = project.getDescription();
-        this.techStack = techStack;
+        this.techStack = project.getTechStack();
         this.startAt = project.getStartAt();
         this.endAt = project.getEndAt();
     }

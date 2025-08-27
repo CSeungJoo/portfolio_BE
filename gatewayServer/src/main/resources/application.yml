@@ -2,5 +2,5 @@ spring:
   application:
     name: gateway
   config:
-    import: configserver:http://${CONFIG_USERNAME}:${CONFIG_PASSWORD}@localhost:8888
+    import: configserver:http://${CONFIG_USERNAME}:${CONFIG_PASSWORD}@${CONFIG_HOST}:8888
 

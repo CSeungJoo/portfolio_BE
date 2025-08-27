@@ -1,0 +1,114 @@
+services:
+  config-server:
+    build:
+      context: ./configServer
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    env_file:
+      - .env
+    networks:
+      - msa-network
+
+  eureka-server:
+    build:
+      context: ./eurekaServer
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    depends_on:
+      - config-server
+    env_file:
+        - .env
+    networks:
+      - msa-network
+
+  gateway-server:
+    build:
+      context: ./gatewayServer
+    container_name: gateway-server
+    ports:
+      - "8080:8080"
+    depends_on:
+      - eureka-server
+      - config-server
+    env_file:
+      - .env
+    networks:
+      - msa-network
+
+  award-server:
+    build:
+      context: ./awardServer
+    container_name: award-server
+    depends_on:
+      - gateway-server
+      - config-server
+    env_file:
+      - .env
+    networks:
+      - msa-network
+
+  project-server:
+    build:
+      context: ./projectServer
+    container_name: project-server
+    depends_on:
+      - gateway-server
+      - config-server
+    env_file:
+      - .env
+    networks:
+      - msa-network
+
+  skill-server:
+    build:
+      context: ./skillServer
+    container_name: skill-server
+    depends_on:
+      - gateway-server
+      - config-server
+    env_file:
+      - .env
+    networks:
+      - msa-network
+
+  auth-server:
+    build:
+      context: ./authServer
+    container_name: auth-server
+    depends_on:
+      - gateway-server
+      - config-server
+    env_file:
+      - .env
+    networks:
+      - msa-network
+
+  profile-server:
+    build:
+      context: ./profileServer
+    container_name: profile-server
+    depends_on:
+      - gateway-server
+      - config-server
+    env_file:
+      - .env
+    networks:
+      - msa-network
+
+  user-server:
+    build:
+      context: ./userServer
+    container_name: user-server
+    depends_on:
+      - gateway-server
+      - config-server
+    env_file:
+      - .env
+    networks:
+      - msa-network
+
+networks:
+  msa-network:
+    driver: bridge

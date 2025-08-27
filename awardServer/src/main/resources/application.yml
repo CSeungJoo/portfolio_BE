@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: award
+  config:
+    import: configserver:http://${CONFIG_USERNAME}:${CONFIG_PASSWORD}@${CONFIG_HOST}:8888
+jwt:
+  secret: ${JWT_SECRET}

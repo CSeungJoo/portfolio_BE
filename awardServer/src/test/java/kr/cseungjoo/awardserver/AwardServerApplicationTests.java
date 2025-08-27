@@ -1,13 +1,13 @@
-package kr.cseungjoo.eurekaserver;
+package kr.cseungjoo.awardserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EurekaServerApplicationTests {
+class AwardServerApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    void contextLoads() {
+    }
 
 }

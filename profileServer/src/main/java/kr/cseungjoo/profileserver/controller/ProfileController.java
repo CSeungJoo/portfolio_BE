@@ -29,7 +29,7 @@ public class ProfileController {
         return BasicResponse.ok(returnProfileDto);
     }
 
-    @GetMapping("/info/{nickname}")
+    @GetMapping("/{nickname}/info")
     public ResponseEntity<BasicResponse.BaseResponse> info(@PathVariable("nickname") String nickname) {
         ProfileModel profileModel = profileFacade.getInfo(nickname);
 

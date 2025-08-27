@@ -41,8 +41,12 @@ public class ProjectFacade {
                 createProjectDto.getSummary(),
                 createProjectDto.getDescription(),
                 createProjectDto.getTechStack(),
+                createProjectDto.getStatus(),
                 createProjectDto.getStartAt(),
                 createProjectDto.getEndAt(),
+                createProjectDto.getGithub(),
+                createProjectDto.getProd(),
+                createProjectDto.getImageUrl(),
                 userIdDto.getUserId()
         );
 
@@ -70,8 +74,12 @@ public class ProjectFacade {
                 modifyProjectDto.getSummary(),
                 modifyProjectDto.getDescription(),
                 modifyProjectDto.getTechStack(),
+                modifyProjectDto.getStatus(),
                 modifyProjectDto.getStartAt(),
-                modifyProjectDto.getEndAt()
+                modifyProjectDto.getEndAt(),
+                modifyProjectDto.getGithub(),
+                modifyProjectDto.getProd(),
+                modifyProjectDto.getImageUrl()
         );
 
         ProjectModel projectModel = new ProjectModel(project);

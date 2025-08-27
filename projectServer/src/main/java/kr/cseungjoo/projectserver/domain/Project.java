@@ -35,20 +35,38 @@ public class Project {
     private List<String> techStack;
 
     @Column
+    @Enumerated(EnumType.STRING)
+    private ProjectStatus status;
+
+    @Column
     private LocalDate startAt;
 
     @Column
     private LocalDate endAt;
 
     @Column
+    private String github;
+
+    @Column
+    private String prod;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String imageUrl;
+
+    @Column
     private long userId;
 
-    public void modify(String title, String summary, String description, List<String> techStack, LocalDate startAt, LocalDate endAt) {
+    public void modify(String title, String summary, String description, List<String> techStack, ProjectStatus status, LocalDate startAt, LocalDate endAt, String github, String prod, String imageUrl) {
         this.title = title;
         this.summary = summary;
         this.description = description;
         this.techStack = techStack;
+        this.status = status;
         this.startAt = startAt;
         this.endAt = endAt;
+        this.github = github;
+        this.prod = prod;
+        this.imageUrl = imageUrl;
     }
 }

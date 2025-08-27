@@ -1,5 +1,6 @@
 package kr.cseungjoo.projectserver.dto;
 
+import kr.cseungjoo.projectserver.domain.ProjectStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -17,6 +18,10 @@ public class CreateProjectDto {
     private String summary;
     private String description;
     private List<String> techStack;
+    private ProjectStatus status;
     private LocalDate startAt;
     private LocalDate endAt;
+    private String github;
+    private String prod;
+    private String imageUrl;
 }

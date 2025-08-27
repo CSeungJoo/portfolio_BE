@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/admin/**").hasAuthority(Role.ADMIN.name())
                         .requestMatchers("/profile/system/**").hasAuthority(Role.SYSTEM.name())
-                        .requestMatchers("/profile/info/*").permitAll()
+                        .requestMatchers("/profile/*/info").permitAll()
                         .anyRequest().hasAnyAuthority(Role.ADMIN.name(), Role.USER.name(), Role.GUEST.name())
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

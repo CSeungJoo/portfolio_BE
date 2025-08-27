@@ -24,18 +24,6 @@ public class RefreshTokenService {
         return refreshTokenRepository.findById(userId);
     }
 
-    public RefreshToken updateAccessToken(String oldAccessToken, String newAccessToken) {
-        Optional<RefreshToken> refreshTokenOpt = findRefreshTokenByAccessToken(oldAccessToken);
-
-        if (refreshTokenOpt.isEmpty())
-                return null;
-
-        RefreshToken refreshToken = refreshTokenOpt.get();
-        refreshToken.updateAccessToken(newAccessToken);
-
-        return refreshTokenRepository.save(refreshToken);
-    }
-
     public void removeUserRefreshToken(long userId) {
         refreshTokenRepository.deleteById(userId);
     }
@@ -48,11 +36,16 @@ public class RefreshTokenService {
         refreshTokenRepository.delete(refreshToken);
     }
 
-    public RefreshToken uploadRefreshToken(String accessToken, String refreshToken, long userId) {
+    public RefreshToken uploadRefreshToken(String refreshToken, long userId) {
         return refreshTokenRepository.save(RefreshToken.builder()
                 .id(userId)
-                .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build());
+    }
+
+    public boolean existsRefreshToken(String refreshTokenStr) {
+        boolean exists = refreshTokenRepository.existsByRefreshToken(refreshTokenStr);
+
+        return exists;
     }
 }

@@ -13,9 +13,4 @@ import lombok.NoArgsConstructor;
 public class TokenDto {
     private String accessToken;
     private String refreshToken;
-
-    public TokenDto(RefreshToken rt) {
-        this.accessToken = rt.getAccessToken();
-        this.refreshToken = rt.getRefreshToken();
-    }
 }

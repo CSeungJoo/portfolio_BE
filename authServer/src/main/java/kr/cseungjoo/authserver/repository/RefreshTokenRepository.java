@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface RefreshTokenRepository extends KeyValueRepository<RefreshToken, Long> {
     Optional<RefreshToken> findByAccessToken(String accessToken);
     void deleteByRefreshToken(String refreshToken);
+
+    boolean existsByRefreshToken(String refreshToken);
 }

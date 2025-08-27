@@ -47,6 +47,16 @@ public class JwtProvider {
     }
 
     /**
+     * token Email 조회
+     *
+     * @param token JWT
+     * @return token Email
+     */
+    public String getRoleFromToken(final String token) {
+        return getClaimFromToken(token, c -> c.get("role", String.class));
+    }
+
+    /**
      * token 사용자 속성 정보 조회
      *
      * @param token JWT

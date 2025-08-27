@@ -5,9 +5,12 @@ import kr.cseungjoo.authserver.domain.RefreshToken;
 import kr.cseungjoo.authserver.dto.LoginDto;
 import kr.cseungjoo.authserver.dto.TokenDto;
 import kr.cseungjoo.authserver.dto.UserDto;
+import kr.cseungjoo.authserver.exception.RefreshTokenNotFoundException;
+import kr.cseungjoo.authserver.exception.RefreshTokenNotValidException;
 import kr.cseungjoo.authserver.feign.AuthFeignClient;
 import kr.cseungjoo.commonmodule.Role;
 import kr.cseungjoo.commonmodule.basic.response.BasicResponse;
+import kr.cseungjoo.commonmodule.exception.ErrorCode;
 import kr.cseungjoo.commonmodule.security.jwt.provider.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -44,12 +47,35 @@ public class AuthService {
                 .map(srt -> {
                     srt.updateToken(accessToken, refreshToken);
                     return srt;
-                }).orElseGet(() -> refreshTokenService.uploadRefreshToken(accessToken, refreshToken, user.getId()));
+                }).orElseGet(() -> refreshTokenService.uploadRefreshToken(refreshToken, user.getId()));
 
         TokenDto tokenDto = TokenDto.builder()
-                .accessToken(rt.getAccessToken())
-                .refreshToken(rt.getRefreshToken())
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .build();
+
+        return tokenDto;
+    }
+
+    public TokenDto refreshToken(String refreshTokenStr) {
+        boolean isRefreshToken = jwtProvider.isRefreshToken(refreshTokenStr);
+
+        if (!isRefreshToken) {
+            throw new RefreshTokenNotValidException();
+        }
+
+        boolean exists = refreshTokenService.existsRefreshToken(refreshTokenStr);
+
+        if (!exists) {
+            throw new RefreshTokenNotFoundException(ErrorCode.REFRESH_TOKEN_NOT_FOUND);
+        }
+
+        String email = jwtProvider.getEmailFromToken(refreshTokenStr);
+        String role = jwtProvider.getRoleFromToken(refreshTokenStr);
+
+        String accessToken = jwtProvider.generateAccessToken(email, Collections.singletonMap("role", role));
+
+        TokenDto tokenDto = new TokenDto(accessToken, refreshTokenStr);
 
         return tokenDto;
     }

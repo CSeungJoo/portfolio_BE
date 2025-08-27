@@ -12,6 +12,9 @@ public enum ErrorCode {
     OPEN_FEIGN_EXCEPTION("서비스간 통신 과정에 문제가 발생하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR, "S5000"),
     //auth
     AUTH_FAILED("접근이 거부되었습니다.", HttpStatus.UNAUTHORIZED, "04010"),
+    REFRESH_TOKEN_NOT_FOUND("리프레시 토큰을 찾을 수 없습니다.", HttpStatus.NOT_FOUND, "04040"),
+    STR_REFRESH_TOKEN_NOT_FOUND("리프레시 토큰을 찾을 수 없습니다.", HttpStatus.NOT_FOUND, "04041"),
+    REFRESH_TOKEN_NOT_VALID("리프레시이 아닙니다.", HttpStatus.BAD_REQUEST, "04010"),
     //user
     USER_NOT_FOUND("사용자를 찾을 수 없습니다.", HttpStatus.NOT_FOUND, "14040"),
     ALREADY_EXIST_USER("이미 존재하는 사용자입니다.", HttpStatus.CONFLICT, "14090"),
@@ -25,7 +28,11 @@ public enum ErrorCode {
     SKILL_NOT_OWNER("해당 스킬의 주인이 아닙니다", HttpStatus.FORBIDDEN, "34030"),
     //project
     PROJECT_NOT_FOUND("프로젝트를 찾을 수 없습니다.", HttpStatus.NOT_FOUND, "44040"),
-    PROJECT_NOT_FOUND_OR_ACCESS_DENIED("프로젝트가 없거나 사용자의 소유가 아닙니다.",HttpStatus.NOT_FOUND , "44041");
+    PROJECT_NOT_FOUND_OR_ACCESS_DENIED("프로젝트가 없거나 사용자의 소유가 아닙니다.",HttpStatus.NOT_FOUND , "44041"),
+    //award
+    AWARD_NOT_OWNER("자신의 수상 이력이 아닙니다", HttpStatus.FORBIDDEN, "54030"),
+    AWARD_NOT_FOUND("수상이력을 찾을 수 없습니다.", HttpStatus.NOT_FOUND, "54040");
+
     private final String msg;
     private final HttpStatus status;
     private final String code;

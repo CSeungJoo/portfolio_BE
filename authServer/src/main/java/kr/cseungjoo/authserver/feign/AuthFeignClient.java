@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(name = "user-service", path = "/user/system")
+@FeignClient(name = "user", path = "/user/system")
 public interface AuthFeignClient {
 
     @PostMapping("/login")

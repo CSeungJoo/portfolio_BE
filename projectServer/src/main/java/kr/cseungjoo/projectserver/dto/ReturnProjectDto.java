@@ -35,6 +35,7 @@ public class ReturnProjectDto {
         this.startAt = projectModel.getStartAt();
         this.endAt = projectModel.getEndAt();
         this.github = projectModel.getGithub();
+        this.prod = projectModel.getProd();
         this.imageUrl = projectModel.getImageUrl();
     }
 }

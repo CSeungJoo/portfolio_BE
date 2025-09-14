@@ -1,21 +1,9 @@
+ARG FILE_DIRECTORY
+
 FROM gradle:8.10.1-jdk17 AS builder
 WORKDIR /app
 
-# 루트 프로젝트 파일들 복사 (멀티모듈 지원)
-COPY build.gradle.kts settings.gradle.kts ./
-COPY gradle ./gradle
-
-# 공통 모듈 복사
-COPY commonModule ./commonModule
-
-# 현재 서비스 빌드 파일 복사
-COPY skillServer/build.gradle.kts ./skillServer/
-
-# 의존성 다운로드 (캐시 활용)
-RUN gradle :skillServer:dependencies --no-daemon
-
-# 소스 코드 복사
-COPY skillServer/src ./skillServer/src
+COPY $FILE_DIRECTORY /app
 
 # 실제 jar 빌드
 RUN gradle :skillServer:clean :skillServer:build -x test --no-daemon

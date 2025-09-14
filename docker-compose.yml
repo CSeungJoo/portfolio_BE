@@ -8,7 +8,10 @@ services:
   # -------------------------
   config-server:
     build:
-      context: ./configServer
+      context: .
+      dockerfile: ./configServer/Dockerfile
+      args:
+        - FILE_DIRECTORY=.
     container_name: config-server
     ports:
       - "8888:8888"
@@ -24,7 +27,10 @@ services:
   # -------------------------
   eureka-server:
     build:
-      context: ./eurekaServer
+      context: .
+      dockerfile: ./eurekaServer/Dockerfile
+      args:
+        - FILE_DIRECTORY=.
     container_name: eureka-server
     ports:
       - "8761:8761"
@@ -42,7 +48,10 @@ services:
   # -------------------------
   gateway-server:
     build:
-      context: ./gatewayServer
+      context: .
+      dockerfile: ./gatewayServer/Dockerfile
+      args:
+        - FILE_DIRECTORY=.
     container_name: gateway-server
     ports:
       - "8080:8080"
@@ -61,7 +70,10 @@ services:
   # -------------------------
   award-server:
     build:
-      context: ./awardServer
+      context: .
+      dockerfile: ./awardServer/Dockerfile
+      args:
+        - FILE_DIRECTORY=.
     container_name: award-server
     depends_on:
       - config-server
@@ -78,7 +90,10 @@ services:
   # -------------------------
   project-server:
     build:
-      context: ./projectServer
+      context: .
+      dockerfile: ./projectServer/Dockerfile
+      args:
+        - FILE_DIRECTORY=.
     container_name: project-server
     depends_on:
       - config-server
@@ -95,7 +110,10 @@ services:
   # -------------------------
   skill-server:
     build:
-      context: ./skillServer
+      context: .
+      dockerfile: ./skillServer/Dockerfile
+      args:
+        - FILE_DIRECTORY=.
     container_name: skill-server
     depends_on:
       - config-server
@@ -112,7 +130,10 @@ services:
   # -------------------------
   auth-server:
     build:
-      context: ./authServer
+      context: .
+      dockerfile: ./authServer/Dockerfile
+      args:
+        - FILE_DIRECTORY=.
     container_name: auth-server
     depends_on:
       - config-server
@@ -129,7 +150,10 @@ services:
   # -------------------------
   profile-server:
     build:
-      context: ./profileServer
+      context: .
+      dockerfile: ./profileServer/Dockerfile
+      args:
+        - FILE_DIRECTORY=.
     container_name: profile-server
     depends_on:
       - config-server
@@ -146,7 +170,10 @@ services:
   # -------------------------
   user-server:
     build:
-      context: ./userServer
+      context: .
+      dockerfile: ./userServer/Dockerfile
+      args:
+        - FILE_DIRECTORY=.
     container_name: user-server
     depends_on:
       - config-server

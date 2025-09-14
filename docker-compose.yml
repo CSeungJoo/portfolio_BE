@@ -1,4 +1,11 @@
+networks:
+  msa-network:
+    driver: bridge
+
 services:
+  # -------------------------
+  # Config Server
+  # -------------------------
   config-server:
     build:
       context: ./configServer
@@ -7,9 +14,14 @@ services:
       - "8888:8888"
     env_file:
       - .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
     networks:
       - msa-network
 
+  # -------------------------
+  # Eureka Server
+  # -------------------------
   eureka-server:
     build:
       context: ./eurekaServer
@@ -19,10 +31,15 @@ services:
     depends_on:
       - config-server
     env_file:
-        - .env
+      - .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
     networks:
       - msa-network
 
+  # -------------------------
+  # Gateway Server
+  # -------------------------
   gateway-server:
     build:
       context: ./gatewayServer
@@ -30,85 +47,113 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - eureka-server
       - config-server
+      - eureka-server
     env_file:
       - .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
     networks:
       - msa-network
 
+  # -------------------------
+  # Award Server
+  # -------------------------
   award-server:
     build:
       context: ./awardServer
     container_name: award-server
     depends_on:
-      - gateway-server
       - config-server
+      - gateway-server
     env_file:
       - .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
     networks:
       - msa-network
 
+  # -------------------------
+  # Project Server
+  # -------------------------
   project-server:
     build:
       context: ./projectServer
     container_name: project-server
     depends_on:
-      - gateway-server
       - config-server
+      - gateway-server
     env_file:
       - .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
     networks:
       - msa-network
 
+  # -------------------------
+  # Skill Server
+  # -------------------------
   skill-server:
     build:
       context: ./skillServer
     container_name: skill-server
     depends_on:
-      - gateway-server
       - config-server
+      - gateway-server
     env_file:
       - .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
     networks:
       - msa-network
 
+  # -------------------------
+  # Auth Server
+  # -------------------------
   auth-server:
     build:
       context: ./authServer
     container_name: auth-server
     depends_on:
-      - gateway-server
       - config-server
+      - gateway-server
     env_file:
       - .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
     networks:
       - msa-network
 
+  # -------------------------
+  # Profile Server
+  # -------------------------
   profile-server:
     build:
       context: ./profileServer
     container_name: profile-server
     depends_on:
-      - gateway-server
       - config-server
+      - gateway-server
     env_file:
       - .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
     networks:
       - msa-network
 
+  # -------------------------
+  # User Server
+  # -------------------------
   user-server:
     build:
       context: ./userServer
     container_name: user-server
     depends_on:
-      - gateway-server
       - config-server
+      - gateway-server
     env_file:
       - .env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
     networks:
       - msa-network
-
-networks:
-  msa-network:
-    driver: bridge

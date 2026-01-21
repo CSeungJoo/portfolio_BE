@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,13 +20,15 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
 
     public List<Project> findAllByUserId(long userId) {
-        List<Project> projectList = projectRepository.findAllByUserId(userId);
+        List<Project> projectList = projectRepository.findAllByUserIdOrderBySortOrderAsc(userId);
 
         return projectList;
     }
 
     @Transactional
     public Project create(String title, String summary, String description, List<String> techStack, ProjectStatus status, LocalDate startAt, LocalDate endAt, String github, String prod, String imageUrl, long userId) {
+        long nextSortOrder = projectRepository.findMaxSortOrderByUserId(userId) + 1;
+
         Project build = Project.builder()
                 .title(title)
                 .summary(summary)
@@ -37,6 +40,7 @@ public class ProjectService {
                 .github(github)
                 .prod(prod)
                 .imageUrl(imageUrl)
+                .sortOrder(nextSortOrder)
                 .userId(userId)
                 .build();
 
@@ -67,5 +71,31 @@ public class ProjectService {
         boolean exists = projectRepository.existsByIdAndUserId(projectId, userId);
 
         return exists;
+    }
+
+    public Optional<Project> find(long projectId, long userId) {
+        Optional<Project> projectOpt = projectRepository.findByIdAndUserId(projectId, userId);
+
+        return projectOpt;
+    }
+
+    @Transactional
+    public Project reorder(Project project, long afterId, long userId) {
+        long newSortOrder;
+
+        if (afterId == 0) {
+            // 맨 앞으로 이동
+            newSortOrder = 1;
+            projectRepository.incrementSortOrderFrom(userId, 1);
+        } else {
+            // afterId 프로젝트 뒤로 이동
+            Project afterProject = projectRepository.findByIdAndUserId(afterId, userId)
+                    .orElseThrow(ProjectNotFoundException::new);
+            newSortOrder = afterProject.getSortOrder() + 1;
+            projectRepository.incrementSortOrderFrom(userId, newSortOrder);
+        }
+
+        project.setSortOrder(newSortOrder);
+        return projectRepository.save(project);
     }
 }

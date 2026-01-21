@@ -5,6 +5,7 @@ import kr.cseungjoo.commonmodule.basic.util.BasicUtil;
 import kr.cseungjoo.commonmodule.security.auth.PrincipalDetails;
 import kr.cseungjoo.projectserver.dto.CreateProjectDto;
 import kr.cseungjoo.projectserver.dto.ModifyProjectDto;
+import kr.cseungjoo.projectserver.dto.ReorderProjectDto;
 import kr.cseungjoo.projectserver.dto.ReturnProjectDto;
 import kr.cseungjoo.projectserver.facade.ProjectFacade;
 import kr.cseungjoo.projectserver.model.ProjectModel;
@@ -46,6 +47,17 @@ public class ProjectController {
     public ResponseEntity<BasicResponse.BaseResponse> modify(@RequestBody ModifyProjectDto modifyProjectDto) {
         PrincipalDetails principal = BasicUtil.getPrincipal();
         ProjectModel projectModel = projectFacade.modify(modifyProjectDto, principal.getEmail());
+
+        ReturnProjectDto returnProjectDto = new ReturnProjectDto(projectModel);
+
+        return BasicResponse.ok(returnProjectDto);
+    }
+
+    @PostMapping("/{id}/reorder")
+    public ResponseEntity<BasicResponse.BaseResponse> reorder(@PathVariable("id") long projectId, @RequestBody ReorderProjectDto reorderProjectDto) {
+        PrincipalDetails principal = BasicUtil.getPrincipal();
+
+        ProjectModel projectModel = projectFacade.reorder(projectId, reorderProjectDto.afterId(), principal.getEmail());
 
         ReturnProjectDto returnProjectDto = new ReturnProjectDto(projectModel);
 

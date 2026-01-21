@@ -55,6 +55,9 @@ public class Project {
     private String imageUrl;
 
     @Column
+    private long sortOrder;
+
+    @Column
     private long userId;
 
     public void modify(String title, String summary, String description, List<String> techStack, ProjectStatus status, LocalDate startAt, LocalDate endAt, String github, String prod, String imageUrl) {
@@ -68,5 +71,9 @@ public class Project {
         this.github = github;
         this.prod = prod;
         this.imageUrl = imageUrl;
+    }
+
+    public void setSortOrder(long sortOrder) {
+        this.sortOrder = sortOrder;
     }
 }

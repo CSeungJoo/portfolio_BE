@@ -117,4 +117,21 @@ public class ProjectFacade {
 
         return projectModelList;
     }
+
+    @Transactional
+    public ProjectModel reorder(long projectId, long afterId, String email) {
+        String systemToken = "Bearer "+ jwtProvider.generateAccessToken("system@system.system", Collections.singletonMap("role", Role.SYSTEM));
+
+        ResponseEntity<BasicResponse.BaseResponse> response = userFeignClient.emailToUserId(systemToken, email);
+        UserIdDto userIdDto = objectMapper.convertValue(response.getBody().data(), UserIdDto.class);
+
+        Project project = projectService.find(projectId, userIdDto.getUserId())
+                .orElseThrow(ProjectNotFoundOrAccessDeniedException::new);
+
+        Project reorderedProject = projectService.reorder(project, afterId, userIdDto.getUserId());
+
+        ProjectModel projectModel = new ProjectModel(reorderedProject);
+
+        return projectModel;
+    }
 }
